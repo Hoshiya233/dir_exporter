@@ -17,7 +17,7 @@ func collect(fileSize prometheus.GaugeVec, path string) {
 		每60秒执行一次
 	*/
 	shell := "du -s " + path + "*"
-	log.Println(shell)
+	log.Println("shell:", shell)
 	for {
 		//整体循环
 		cmd := exec.Command("/bin/bash", "-c", shell)
