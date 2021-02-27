@@ -8,7 +8,7 @@
 
 √ 适配prometheus的exporter，开放http服务
 
-□ 增加配置文件功能，用于配置端口号和path
+√ 增加配置文件功能，用于配置端口号和path
 
 □ 打包成二进制文件
 
