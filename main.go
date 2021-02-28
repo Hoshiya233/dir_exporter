@@ -15,7 +15,7 @@ import (
 )
 
 //VERSION 版本号
-var VERSION = "0.1"
+var VERSION = "0.1.0"
 var isPrintVersion = false
 
 type config struct {
