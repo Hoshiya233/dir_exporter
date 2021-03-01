@@ -31,16 +31,16 @@ func collect(fileSize prometheus.GaugeVec, paths []string) {
 			}
 
 			//执行命令
-			log.Println("开始执行命令")
+			log.Println("开始执行命令", shell)
 			if err := cmd.Start(); err != nil {
 				log.Println("Error:The command is err,", err)
 			}
-			log.Println("命令执行完毕")
+			log.Println("命令执行完毕", shell)
 
 			//使用带缓冲的读取器
 			outputBuf := bufio.NewReader(stdout)
 
-			log.Println("开始读取结果")
+			log.Println("开始读取结果", shell)
 			for {
 				//一次获取一行,_ 获取当前行是否被读完
 				output, _, err := outputBuf.ReadLine()
@@ -51,7 +51,6 @@ func collect(fileSize prometheus.GaugeVec, paths []string) {
 					}
 					break
 				}
-				log.Printf("%s\n", string(output))
 
 				//将结果保存
 				s := string(output)
@@ -60,7 +59,7 @@ func collect(fileSize prometheus.GaugeVec, paths []string) {
 				value, _ := strconv.ParseFloat(ss[0], 64)
 				fileSize.WithLabelValues(key).Set(value)
 			}
-			log.Println("结果读取完毕")
+			log.Println("结果读取完毕", shell)
 
 			//输出错误信息
 			if err := cmd.Wait(); err != nil {

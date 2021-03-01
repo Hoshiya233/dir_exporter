@@ -15,8 +15,11 @@ import (
 )
 
 //VERSION 版本号
-var VERSION = "0.1.1"
+var VERSION = "0.1.2"
 var isPrintVersion = false
+
+//ConfigFilePath 配置文件路径
+var ConfigFilePath = "./config.yml"
 
 type config struct {
 	//结构体里变量的名字不能和yml文件里的名字全等，这是yaml模块的坑
@@ -24,18 +27,20 @@ type config struct {
 	Port  string   `yaml:"port"`
 }
 
-func main() {
-	Config := getConfig()
-	//先读取配置文件里的参数，再获取命令行参数，因此命令行配置优先级更高
-	flag.StringVar(&Config.Port, "port", Config.Port, "指定开放的端口号")
+func init() {
+	// flag.StringVar(&Config.Port, "port", Config.Port, "指定开放的端口号")
 	// flag.StringVar(&Config.Path, "path", Config.Path, "被监控的目录")
+	flag.StringVar(&ConfigFilePath, "c", ConfigFilePath, "配置文件路径，绝对路径")
 	flag.BoolVar(&isPrintVersion, "v", false, "显示版本号，然后退出")
 	flag.Parse()
-
 	if isPrintVersion {
 		fmt.Println("version:", VERSION)
 		os.Exit(0)
 	}
+}
+
+func main() {
+	Config := getConfig()
 	for i, Path := range Config.Paths {
 		if !strings.HasSuffix(Path, "/") {
 			//如果配置文件path不是以/结尾，就加上
@@ -65,7 +70,7 @@ func main() {
 
 func getConfig() config {
 	c := new(config)
-	yamlFile, err := ioutil.ReadFile("config.yml")
+	yamlFile, err := ioutil.ReadFile(ConfigFilePath)
 	if err != nil {
 		log.Printf("yamlFile.Get err   #%v ", err)
 		c.Port = "8816"
