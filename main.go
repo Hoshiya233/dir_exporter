@@ -22,7 +22,6 @@ var isPrintVersion = false
 var ConfigFilePath = "./config.yml"
 
 type config struct {
-	//结构体里变量的名字不能和yml文件里的名字全等，这是yaml模块的坑
 	Paths []string `yaml:"paths"`
 	Port  string   `yaml:"port"`
 }
